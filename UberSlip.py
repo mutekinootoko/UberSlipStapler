@@ -17,7 +17,12 @@ class UberSlip:
 
 		if self.isMain == False :
 			# add meta to rental slip html body
-			self.body = self.soup.prettify('utf-8')
+			self.soup.html.body.insert_before(self.soup.new_tag('head'))
+			metaEle = self.soup.new_tag('meta')
+			metaEle['http-equiv'] = 'Content-Type'
+			metaEle['content'] = 'text/html; charset=utf-8'
+			self.soup.html.head.append(metaEle)
+			self.body = self.soup.prettify()
 
 	def determineMainMessage(self) :
 		try :
@@ -57,8 +62,10 @@ class UberSlip:
 		try :
 			dateText = self.soup.select('td.rideInfo.gray')[1].text
 			startdate = dateText[:dateText.index(u' |')]
+			startdate = startdate.strip()
 			timeText = self.soup.select('span.rideTime.black')[0].text
 			startTime = timeText[:timeText.index(u' |')]
+			startTime = startTime.replace(':', '').strip()
 			return '{}{}'.format(startdate.encode('utf8'), startTime.encode('utf8')).strip()
 		except Exception, e :
 			print ('Error occured processing start datetime at {}, {}'.format(self.title, e))

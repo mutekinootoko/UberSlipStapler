@@ -45,7 +45,7 @@ def stapleAndPrintSlips(slips, year, month) :
 		with open(htmlfileMainpath, 'w') as h1f :
 			h1f.write(mainSlip.body)
 		with open(htmlfileRentalpath, 'w') as h2f :
-			h2f.write(rentalSlip.body)
+			h2f.write(rentalSlip.body.encode('utf-8'))
 		# write to pdf 
 		pdffilepath = '{filename}.pdf'.format(filename=filename)
 		try :
