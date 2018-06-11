@@ -1,4 +1,4 @@
-requirements.txt# -*- encoding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 # python 2.7
 
 import argparse
@@ -52,7 +52,7 @@ def stapleAndPrintSlips(slips, year, month) :
 			pdfkit.from_file([htmlfileMainpath, htmlfileRentalpath], pdffilepath)
 		except Exception, e:
 			pass
-		print '{} | {} | {}'.format(mainSlip, rentalSlip, pdffilepath)
+		print 'main receipt:{}, rental slip:{}, output pdf: {}'.format(mainSlip, rentalSlip, pdffilepath)
 
 
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
 		execfile(settingfile)
 		print ('loading from settings file.')
 
-	print ('Search for uber slip in {}/{}'.format(year, month))	
+	print ('Search for uber slips in {}/{}'.format(year, month))	
 
 	gmailServiceWrap = GmailServiceWrap(GMAIL_USER_ID, args)
 	'''

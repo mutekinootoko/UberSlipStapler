@@ -59,7 +59,7 @@ class UberSlip:
 			startdate = dateText[:dateText.index(u' |')]
 			timeText = self.soup.select('span.rideTime.black')[0].text
 			startTime = timeText[:timeText.index(u' |')]
-			return '{}{}'.format(startdate.encode('utf8'), startTime.encode('utf8'))
+			return '{}{}'.format(startdate.encode('utf8'), startTime.encode('utf8')).strip()
 		except Exception, e :
 			print ('Error occured processing start datetime at {}, {}'.format(self.title, e))
 			return None	
@@ -69,7 +69,7 @@ class UberSlip:
 			return None
 		try :
 			fareText = self.soup.select('.totalPrice.topPrice.tal.black')[0].text
-			return fareText.replace(u' $', '').replace(u'.00', '')
+			return fareText.replace(u' $', '').replace(u'.00', '').strip()
 		except Exception, e :
 			print ('Error occured processing fare at {}, {}'.format(self.title, e))
 			return None
