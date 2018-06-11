@@ -5,14 +5,14 @@
 非常適合公司報帳用 :)。
 
 This program is designed for processing receipts sent by Uber Taiwan, the text processing only works with Taiwanese language.
-Uber Taiwan sends out two emails on every ride, which is required by Taiwanese law.
+Uber Taiwan sends out two emails after each ride, which is required by Taiwanese law.
 One is the main receipt and the other contains car rental informations.
-This python program collects Uber receipts from Gmail acccount, parses infomations, and combines ("staples") the two matching emails (of each ride) into one pdf file. Great for applying travel reimbursements. 
+This python program collects Uber receipts from Gmail acccount, parses infomation, and combines ("staples") the two matching emails (of each ride) into one pdf file. Great for applying travel reimbursements :). 
 
 ### Requirements
 Make sure follow instructions below:
 
-For macOS, 
+Install `wkhtmltopdf`, for macOS, 
 ```
 brew install caskroom/cask/wkhtmltopdf
 ```
@@ -66,7 +66,6 @@ Go to the following link in your browser:
 Enter verification code:
 ```
 follow the instructions . 
-Make sure you have `client_secret.json` file. (see Gmail OAuth2 section)
 
 For more options:
 ```
