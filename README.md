@@ -69,7 +69,14 @@ follow the instructions .
 
 For more options:
 ```
-python uberSlipStapler.py -h
+usage: uberSlipStapler.py [-h] [-m MONTH] [-y YEAR]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -m MONTH, --month MONTH
+                        month to search in number, Jan=1, default: current
+                        month
+  -y YEAR, --year YEAR  year to search, default: current year
 ```
 
 ## Program Details
