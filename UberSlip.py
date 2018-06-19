@@ -47,7 +47,11 @@ class UberSlip:
 	def stripPlateNumber(self) :
 		if self.isMain :
 			try :
-				plateText = self.soup.select('td.fareDisclaimer.tal')[2].text
+				# if user gave uber their tw id number.
+				plateText = self.soup.select('td.fareDisclaimer.tal')[1].text
+				if plateText.find(u'車牌號碼') < 0 :
+					# driver did not gave id to uber
+					plateText = self.soup.select('td.fareDisclaimer.tal')[2].text
 				return plateText.replace(u'車牌號碼：', '').strip().encode('utf8')
 			except Exception, e:
 				print ('Error occured processing plate number at {}, {}'.format(self.title, e))
