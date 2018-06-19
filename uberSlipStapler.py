@@ -33,7 +33,7 @@ def stapleAndPrintSlips(slips, year, month) :
 		pass
 
 	for platenumber, mainSlip in mainSlips.iteritems() :
-		print platenumber
+		#print platenumber
 		rentalSlip = rentalSlips[platenumber]
 		filename = './{dir}/{datetime}-{drivername}-{plate}-{fare}'.format(dir=dirname,
 																		datetime=mainSlip.startDatetime,
