@@ -2,7 +2,7 @@
 基於台灣相關法令，
 台灣 Uber 在每趟租車服務後，都會寄出兩份 email 收據，一封主要收據，另外一封是租車資訊。
 這 python 程式可將 Gmail 帳號內的收據讀取出來，取出租車資訊，並且將對應的兩封收據信合併存成一份 pdf 檔案。
-非常適合公司報帳用 :)。
+非常適合公司報帳用 XD。
 
 This program is designed for processing receipts sent by Uber Taiwan, the text processing only works with Taiwanese language.
 Uber Taiwan sends out two emails after each ride, which is required by Taiwanese law.
@@ -69,7 +69,14 @@ follow the instructions .
 
 For more options:
 ```
-python uberSlipStapler.py -h
+usage: uberSlipStapler.py [-h] [-m MONTH] [-y YEAR]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -m MONTH, --month MONTH
+                        month to search in number, Jan=1, default: current
+                        month
+  -y YEAR, --year YEAR  year to search, default: current year
 ```
 
 ## Program Details
