@@ -17,14 +17,14 @@ def stapleAndPrintSlips(slips, year, month) :
 	Returns:
 		void
 	'''
-	# dictionary{plate:UberSlip}
+	# dictionary{plate_date:UberSlip}
 	rentalSlips = {}
 	mainSlips = {}
 	for us in slips :
 		if us.isMain :
-			mainSlips[us.plateNumber] = us
+			mainSlips['{}_{}'.format(us.plateNumber, us.date)] = us
 		else :
-			rentalSlips[us.plateNumber] = us
+			rentalSlips['{}_{}'.format(us.plateNumber, us.date)] = us
 
 	dirname = '{}-{}'.format(year, month)
 	try :
@@ -32,9 +32,33 @@ def stapleAndPrintSlips(slips, year, month) :
 	except OSError, ose :
 		pass
 
-	for platenumber, mainSlip in mainSlips.iteritems() :
+	if len(mainSlips) != len(rentalSlips) :
+		# missing matching slip
+		print ('There are {} main slips, but {} rental slips.'.format(len(mainSlips), len(rentalSlips)))
+		if len(mainSlips) > len(rentalSlips) :
+			# try find missing slip
+			for platenumberAndDate, mainSlip in mainSlips.iteritems() :
+				try :
+					rslip = rentalSlips[platenumberAndDate] 
+				except KeyError, ke:
+					print ('MISSING rental slip at {datetime} with plate number {plate} fare {fare}, check with uber app.'.format(datetime=mainSlip.startDatetime,
+																										plate=mainSlip.plateNumber,
+																										fare=mainSlip.fare))
+		else :
+			for platenumberAndDate, rslip in rentalSlips.iteritems() :
+				try :
+					mslip = mainSlips[platenumberAndDate]
+				except KeyError, ke:
+					print ('MISSING main slip plate {plate}, check with uber app.'.format(plate=rslip.plateNumber))
+
+
+	for platenumberAndDate, mainSlip in mainSlips.iteritems() :
 		#print platenumber
-		rentalSlip = rentalSlips[platenumber]
+		try :
+			rentalSlip = rentalSlips[platenumberAndDate]
+		except KeyError, ke:
+			continue
+		
 		filename = './{dir}/{datetime}-{drivername}-{plate}-{fare}'.format(dir=dirname,
 																		datetime=mainSlip.startDatetime,
 																		drivername=mainSlip.driverName,

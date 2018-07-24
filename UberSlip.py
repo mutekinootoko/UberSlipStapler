@@ -14,6 +14,8 @@ class UberSlip:
 		self.plateNumber = self.stripPlateNumber()
 		self.startDatetime = self.stripStartDatetime()
 		self.fare = self.stripFare()
+		#add to dic key, in case of duplicated plate number (same uber car in same month)
+		self.date = self.stripStartDate()
 
 		if self.isMain == False :
 			# add meta to rental slip html body
@@ -50,7 +52,7 @@ class UberSlip:
 				# if user gave uber their tw id number.
 				plateText = self.soup.select('td.fareDisclaimer.tal')[1].text
 				if plateText.find(u'車牌號碼') < 0 :
-					# driver did not gave id to uber
+					# user did not gave id to uber
 					plateText = self.soup.select('td.fareDisclaimer.tal')[2].text
 				return plateText.replace(u'車牌號碼：', '').strip().encode('utf8')
 			except Exception, e:
@@ -59,10 +61,23 @@ class UberSlip:
 		else :
 			plateText = self.title.replace('Rental Slip - ', '')
 			return plateText[:plateText.index(' - ')].strip()
-	
+
+	def stripStartDate(self) :
+		dateTimeString = self.stripStartDatetime()
+		if self.isMain == False :
+			#19.07.2018 1:04#
+			return int(dateTimeString[:dateTimeString.index('.')])
+		else :
+			#2018年7月19日109 
+			dateTimeString = dateTimeString[dateTimeString.find('\xe6\x9c\x88') + len('\xe6\x9c\x88'):] #月 #月19日109
+			return int(dateTimeString[0:dateTimeString.find('\xe6\x97\xa5')]) #日 #19
+
 	def stripStartDatetime(self) :
 		if self.isMain == False :
-			return None
+			# minute of two slips might not match
+			plateText = self.title.replace('Rental Slip - ', '')
+			rslipDatetime = plateText[plateText.index('- ') + len('- '):].strip() #19.07.2018 1:04
+			return rslipDatetime
 		try :
 			dateText = self.soup.select('td.rideInfo.gray')[1].text
 			startdate = dateText[:dateText.index(u' |')]
