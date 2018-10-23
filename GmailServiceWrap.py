@@ -22,6 +22,9 @@ class GmailServiceWrap:
 		self.gmailUserId = gmailUserId
 
 	def createGmailService(self, args) :
+		'''
+		access gmail service
+		'''
 		args.noauth_local_webserver = True
 		args.logging_level='DEBUG'
 		#args.logging_level='WARNING'
@@ -39,11 +42,14 @@ class GmailServiceWrap:
 
 	def uberSlipsSearch(self, year, month) :
 		'''
+		apply search string to gmail service
+
 		Returns:
 			array of message id strings.
 		'''
 		lastDayOfMonth = monthrange(year, month)[1]
 		searchQuery = 'from:(uber.com) 出租單 after:{year}/{monthInt}/01 before:{year}/{monthInt}/{lastDay}'.format(year=year, monthInt=month, lastDay=lastDayOfMonth)
+		print ('search query {}'.format(searchQuery))
 
 		response = self.gmailService.users().messages().list(userId=self.gmailUserId, q=searchQuery).execute()
 		messageIds = []
@@ -61,6 +67,8 @@ class GmailServiceWrap:
 
 	def extractUberSlipMessageTitleBodyByMessageId(self, messageId) :
 		'''
+		search single gmail by message id
+
 		Returns:
 			tuple(title, body)
 		'''
@@ -74,6 +82,7 @@ class GmailServiceWrap:
 			# no payload.parts
 			body = response['payload']['body']['data']
 		messageBody = base64.urlsafe_b64decode(body.encode('ASCII'))
+		#print messageBody
 		title =[ f['value']  for f in response['payload']['headers'] if f['name'] == 'Subject' ][0]
 		return (title, messageBody)
 		'''

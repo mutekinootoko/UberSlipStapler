@@ -106,3 +106,7 @@ venv.bak/
 client_secret.json
 credentials.json
 settings.py
+
+.history/
+2018-*/
+2019-*/

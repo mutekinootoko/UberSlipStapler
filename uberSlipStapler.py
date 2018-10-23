@@ -6,6 +6,7 @@ from GmailServiceWrap import GmailServiceWrap
 import datetime
 import pdfkit
 import os
+from UberSlip import UberSlipType
 
 # FILL THIS
 GMAIL_USER_ID = None
@@ -17,11 +18,11 @@ def stapleAndPrintSlips(slips, year, month) :
 	Returns:
 		void
 	'''
-	# dictionary{plate_date:UberSlip}
+	# dictionary{plate_date:UberSlip}, eg: 30(int):RBS3913
 	rentalSlips = {}
 	mainSlips = {}
 	for us in slips :
-		if us.isMain :
+		if us.slipType == UberSlipType.OldMain or us.slipType == UberSlipType.NewMain:
 			mainSlips['{}_{}'.format(us.plateNumber, us.date)] = us
 		else :
 			rentalSlips['{}_{}'.format(us.plateNumber, us.date)] = us
@@ -68,9 +69,17 @@ def stapleAndPrintSlips(slips, year, month) :
 		htmlfileRentalpath = '{filename}-rental.html'.format(filename=filename)
 		# write html to file
 		with open(htmlfileMainpath, 'w') as h1f :
-			h1f.write(mainSlip.body)
+			try :
+				h1f.write(mainSlip.body)
+			except UnicodeDecodeError, e:
+				print ('UnicodeDecodeError at main slip, {} {} '.format( mainSlip.plateNumber, e))
+				pass
 		with open(htmlfileRentalpath, 'w') as h2f :
-			h2f.write(rentalSlip.body.encode('utf-8'))
+			try :
+				h2f.write(rentalSlip.body.encode('utf-8'))
+			except UnicodeDecodeError, e:
+				print ('UnicodeDecodeError at rental slip, {} {} '.format( rentalSlip.plateNumber, e))
+				pass
 		# write to pdf 
 		pdffilepath = '{filename}.pdf'.format(filename=filename)
 		try :
