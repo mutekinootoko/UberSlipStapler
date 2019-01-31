@@ -48,7 +48,7 @@ class GmailServiceWrap:
 			array of message id strings.
 		'''
 		lastDayOfMonth = monthrange(year, month)[1]
-		searchQuery = 'from:(uber.com) 出租單 after:{year}/{monthInt}/01 before:{year}/{monthInt}/{lastDay}'.format(year=year, monthInt=month, lastDay=lastDayOfMonth)
+		searchQuery = 'from:(uber.com) after:{year}/{monthInt}/01 before:{year}/{monthInt}/{lastDay}'.format(year=year, monthInt=month, lastDay=lastDayOfMonth)
 		print ('search query {}'.format(searchQuery))
 
 		response = self.gmailService.users().messages().list(userId=self.gmailUserId, q=searchQuery).execute()
